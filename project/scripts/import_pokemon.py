@@ -24,6 +24,26 @@ with open('types.csv', 'r', encoding='utf-8') as tps:
 
 conn.commit()
 
+cursor.execute("CREATE TABLE pokemon_types_table(POKEMON_ID INTEGER,TYPE_ID INTEGER ,SLOT INTEGER);")
+with open('pokemon_types.csv', 'r', encoding='utf-8') as pkmntps:
+    pok_types = csv.reader(pkmntps)
+    next(pok_types)
+    for row in pok_types:
+        cursor.execute("INSERT INTO pokemon_types_table(pokemon_id, type_id, slot) VALUES (%s, %s, %s)", row)
+
+
+conn.commit()
+
+cursor.execute("CREATE TABLE pokemon_evolutions(POKEMON_ID INTEGER, EVOLVES_FROM INTEGER);")
+with open('pokemon_species.csv', 'r', encoding='utf-8') as spcs:
+    pok_species = csv.reader(spcs)
+    next(pok_species)
+    for row in pok_species:
+        cursor.execute("INSERT INTO pokemon_evolutions(pokemon_id, evolves_from) VALUES (%s, %s)", (row[0], row[3] or None))
+
+
+conn.commit()
+
 cursor.close()
 conn.close()
 
